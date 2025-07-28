@@ -1,0 +1,14 @@
+# 3. EKONOMİK VE BÖLGESEL FAKTÖRLERLE AĞIRLIKLANDIRMA
+# Her bölge için en iyi 3 türü seçip dikim oranlarını hesapla
+regions = ['Ege', 'Akdeniz', 'Marmara', 'Karadeniz', 'İç Anadolu']
+dikim_planlari = []
+
+for region in regions:
+    regional_df = df[df['Bolgesel_Uyum'].str.contains(region, na=False)]
+    top_species = regional_df.sort_values('Skor_Senaryo2', ascending=False).head(3)
+    total_score = top_species['Skor_Senaryo2'].sum()
+    top_species['Dikim_Orani_%'] = (top_species['Skor_Senaryo2'] / total_score * 100).round(1)
+    for idx, row in top_species.iterrows():
+        dikim_planlari.append([region, row['Agac_Turu'], row['Skor_Senaryo2'], row['Dikim_Orani_%']])
+
+plan_df = pd.DataFrame(dikim_planlari, columns=['Bölge', 'Ağaç Türü', 'Skor', 'Dikim Oranı (%)'])
