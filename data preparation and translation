@@ -1,0 +1,46 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. VERİ TEMİZLEME VE HAZIRLIK
+# CSV dosyasını yükleyelim (Türkçe kodlama ve noktalı virgül ayraç ile)
+df = pd.read_csv('Yangina_Dayanikli_Orman_Tasarimi_Modeli_DUZELTILMIS.csv', encoding='ISO-8859-9', sep=';')
+
+# Sütun isimlerini düzenleyelim
+df.columns = ['Agac_Turu', 'Yanma_Hizi_m_s', 'Yangina_Dayaniklilik', 'Ekonomik_Getiri', 'Bolgesel_Uyum', 'Alternatif_Orman_Uygun']
+
+# Dayanıklılık skorları ve ekonomik skorlar için mapping
+dayaniklilik_map = {'Yüksek': 3, 'Orta-Yüksek': 2, 'Orta': 1, 'Düşük': 0}
+
+# Ekonomik değer metinlerini normalize edelim
+df['Ekonomik_Getiri'] = df['Ekonomik_Getiri'].str.replace(r'\s+', ' ', regex=True).str.strip()
+
+# Ekonomik değer skorları (tüm değerler dahil)
+ekonomik_map = {
+    'Çok Yüksek (ceviz)': 3,
+    'Yüksek (bal odun)': 2,
+    'Orta (kereste odun)': 1,
+    'Orta (kereste)': 1,
+    'Orta (kereste tıbbi)': 1,
+    'Orta (yağ üretimi)': 1,
+    'Düşük': 0
+}
+
+# Skorları ekleyelim
+df['Dayaniklilik_Skoru'] = df['Yangina_Dayaniklilik'].map(dayaniklilik_map)
+df['Ekonomik_Skor'] = df['Ekonomik_Getiri'].map(ekonomik_map).fillna(0)
+
+# Yanma hızı risk skorunu oluştur (düşük hız yüksek skor)
+df['Yangin_Risk_Skoru'] = df['Yanma_Hizi_m_s'].max() - df['Yanma_Hizi_m_s']
+
+# "Tüm bölgeler" ifadesi olan türleri her bölgeye dağıtalım
+expanded_rows = []
+for idx, row in df.iterrows():
+    if 'Tüm bölgeler' in str(row['Bolgesel_Uyum']):
+        for region in ['Ege', 'Akdeniz', 'Marmara', 'Karadeniz', 'İç Anadolu']:
+            new_row = row.copy()
+            new_row['Bolgesel_Uyum'] = region
+            expanded_rows.append(new_row)
+    else:
+        expanded_rows.append(row)
+
+df = pd.DataFrame(expanded_rows)
