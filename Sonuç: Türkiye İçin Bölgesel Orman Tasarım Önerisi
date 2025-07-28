@@ -14,3 +14,14 @@ plt.show()
 
 # Son tabloyu çıktı olarak gösterelim
 print(plan_df)
+
+
+Bu analiz sonucuna göre Türkiye için 2025 orman tasarım önerisi:
+
+- "Meşe oranı %20 azaltıldı ve yanma hızı 2 kat ağırlıklandırıldı", bu sayede yangın riski minimize edildi.
+- "Marmara ve Karadeniz’de" düşük yanma hızına sahip "Ihlamur ve Kayın" daha baskın hale geldi.
+- "Akdeniz ve İç Anadolu’da" ekonomik değeri yüksek "Ceviz ve Meşe" dengeli kullanıldı.
+- "Ege’de" Ceviz ve Akasya öne çıktı, ancak Akasya yüksek yanma hızına rağmen ekonomik değeriyle % düşük oranda tutuldu.
+- Bu plan, "yangın riskini azaltırken ekonomik değeri de koruyacak şekilde optimize edildi".
+
+Bu oranlar, her bölge için 1 milyon fidan veya belirli bütçeler üzerinden ölçeklenebilir.
