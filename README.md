@@ -1,0 +1,1 @@
+# Fire-Resistant-Forest-Design-Data-Driven-Reforestation-Strategy-for-Turkey-2025-
