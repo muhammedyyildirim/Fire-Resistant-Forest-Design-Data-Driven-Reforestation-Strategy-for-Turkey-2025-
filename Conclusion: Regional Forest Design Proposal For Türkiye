@@ -1,0 +1,16 @@
+# 4. SONUÇ: TÜRKİYE İÇİN BÖLGESEL ORMAN TASARIM ÖNERİSİ
+# Grafikle görselleştirme
+plt.figure(figsize=(12, 6))
+for region in regions:
+    data = plan_df[plan_df['Bölge'] == region]
+    plt.bar([f"{region}-{row['Ağaç Türü']}" for _, row in data.iterrows()], data['Dikim Oranı (%)'], label=region)
+
+plt.title("Yangın Dayanıklı ve Ekonomik Dengeli Bölgesel Dikim Planı (2025)")
+plt.ylabel("Dikim Oranı (%)")
+plt.xticks(rotation=90)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Son tabloyu çıktı olarak gösterelim
+print(plan_df)
