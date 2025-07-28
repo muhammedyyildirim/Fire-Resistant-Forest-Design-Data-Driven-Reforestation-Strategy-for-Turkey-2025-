@@ -1,0 +1,10 @@
+# 2. YANGIN RİSKİNE GÖRE AĞAÇ TÜRLERİNİ SIRALAMA
+# Yangın dayanıklılığı (2 kat ağırlık), yanma hızı ve ekonomik değerlerle skorlama (2 senaryo)
+df['Yangin_Risk_Skoru_Agırlıklı'] = (df['Yanma_Hizi_m_s'].max() - df['Yanma_Hizi_m_s']) * 2
+
+# Meşe için ek %20 ceza (fazla yanabilirliği telafi etmek için)
+df['Meşe_Katsayısı'] = df['Agac_Turu'].apply(lambda x: 0.8 if 'Meşe' in x else 1.0)
+
+# Skorlar (Senaryo 1: Yangına dayanıklı, Senaryo 2: Dayanıklı + Ekonomik)
+df['Skor_Senaryo1'] = (df['Dayaniklilik_Skoru'] * 2 + df['Yangin_Risk_Skoru_Agırlıklı']) * df['Meşe_Katsayısı']
+df['Skor_Senaryo2'] = (df['Dayaniklilik_Skoru'] * 2 + df['Ekonomik_Skor'] + df['Yangin_Risk_Skoru_Agırlıklı']) * df['Meşe_Katsayısı']
